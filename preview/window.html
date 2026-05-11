@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — window chrome</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px; background: #008080; font-family: 'Tahoma', Arial, sans-serif; min-height: 100vh; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 3px); }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; align-items: start; }
+
+    /* win98 raised window */
+    .w98 {
+      background: #c0c0c0; border: 1px solid #000;
+      box-shadow:
+        inset 1px 1px 0 #dfdfdf, inset -1px -1px 0 #404040,
+        inset 2px 2px 0 #fff, inset -2px -2px 0 #808080,
+        4px 4px 0 #000;
+    }
+    .w98 .titlebar {
+      background: linear-gradient(90deg, #0b4dd6 0%, #1f63f0 100%);
+      color: #fff; font-family: 'Trebuchet MS', sans-serif; font-weight: bold;
+      font-size: 11px; padding: 3px 4px 3px 6px;
+      display: flex; align-items: center; gap: 6px;
+      text-shadow: 1px 1px 0 #000;
+    }
+    .w98 .titlebar .ico { width: 14px; height: 14px; background: #ffffff; border: 1px solid #000; color: #000; font-size: 10px; line-height: 12px; text-align: center; font-family: 'Tahoma', sans-serif; }
+    .w98 .titlebar.inactive { background: #808080; }
+    .w98 .ctl-grp { margin-left: auto; display: flex; gap: 2px; }
+    .w98 .ctl {
+      width: 17px; height: 14px; line-height: 12px; text-align: center;
+      background: #c0c0c0; color: #000; font-family: 'Marlett','Tahoma',sans-serif; font-size: 10px;
+      border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080;
+    }
+    .w98 .menubar {
+      background: #c0c0c0; border-bottom: 1px solid #808080;
+      font-family: 'MS Sans Serif','Tahoma',sans-serif; font-size: 11px;
+      padding: 2px 4px; display: flex; gap: 8px;
+    }
+    .w98 .menubar span:first-child { background: #0b4dd6; color: #fff; padding: 1px 4px; }
+    .w98 .menubar span { padding: 1px 4px; }
+    .w98 .menubar u { text-decoration: underline; }
+
+    .w98 .toolbar {
+      display: flex; gap: 2px; padding: 3px;
+      background: #c0c0c0; border-bottom: 1px solid #808080;
+    }
+    .w98 .tool {
+      width: 22px; height: 22px; background: #c0c0c0; border: 1px solid transparent;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px;
+    }
+    .w98 .tool:hover, .w98 .tool.on {
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080; border: 1px solid #000;
+    }
+
+    .w98 .body { padding: 12px; min-height: 80px;
+      background: #fff;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff,
+                  inset 2px 2px 0 #404040, inset -2px -2px 0 #dfdfdf;
+      margin: 0 6px;
+      font-family: 'MS Sans Serif','Tahoma',sans-serif; font-size: 11px; line-height: 1.4;
+    }
+
+    .w98 .statusbar {
+      display: flex; gap: 2px; padding: 3px 4px 4px;
+      font-family: 'MS Sans Serif',sans-serif; font-size: 10px;
+    }
+    .w98 .statusbar .cell {
+      background: #c0c0c0; padding: 1px 6px; flex: 1;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
+    }
+    .w98 .statusbar .cell:last-child { text-align: right; }
+
+    /* macos classic — platinum stripe titlebar */
+    .mac {
+      background: #ddd; border: 1px solid #000;
+      box-shadow: 4px 4px 0 #000;
+    }
+    .mac .titlebar {
+      background: repeating-linear-gradient(0deg, #fff 0 1px, #c8c8c8 1px 2px);
+      border-bottom: 1px solid #000; padding: 2px 6px;
+      font-family: 'Charcoal','Helvetica',sans-serif; font-size: 11px; font-weight: bold;
+      color: #000; display: flex; align-items: center; gap: 6px;
+    }
+    .mac .titlebar .x {
+      width: 12px; height: 12px; background: #fff; border: 1px solid #000;
+      flex: 0 0 12px;
+    }
+    .mac .titlebar .name {
+      background: #ddd; padding: 0 8px; border-left: 1px solid #000; border-right: 1px solid #000;
+      margin: 0 auto;
+    }
+    .mac .body { padding: 12px; font-family: 'Geneva','Helvetica',sans-serif; font-size: 11px; line-height: 1.4; background: #fff; }
+
+    /* damaged window — half painted out, glitched titlebar */
+    .broken { position: relative; }
+    .broken::after {
+      content: ""; position: absolute; left: 0; right: 0; top: 32%; height: 8px;
+      background: repeating-linear-gradient(90deg, #0b4dd6 0 4px, #fff 4px 6px, #0b4dd6 6px 10px);
+      mix-blend-mode: multiply; pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <!-- active win98 window -->
+    <div class="w98">
+      <div class="titlebar">
+        <div class="ico">♫</div>
+        <span>music.mp3 — oncite player</span>
+        <div class="ctl-grp">
+          <div class="ctl">_</div><div class="ctl">▢</div><div class="ctl">×</div>
+        </div>
+      </div>
+      <div class="menubar">
+        <span><u>f</u>ile</span><span><u>e</u>dit</span><span><u>v</u>iew</span><span><u>p</u>layback</span><span><u>h</u>elp</span>
+      </div>
+      <div class="toolbar">
+        <div class="tool on">◀◀</div>
+        <div class="tool">▶</div>
+        <div class="tool">▶▶</div>
+        <div class="tool">■</div>
+        <div class="tool" style="margin-left:6px;">♪</div>
+        <div class="tool">≡</div>
+      </div>
+      <div class="body">now playing — cerebral aura · 2:13 / 3:22<br>file: cerebral_aura_v3_FINAL_final.mp3 — 4.8 mb · 320 kbps</div>
+      <div class="statusbar">
+        <div class="cell">// 6 tracks</div>
+        <div class="cell">44.1 khz · stereo</div>
+        <div class="cell">vol: 64%</div>
+      </div>
+    </div>
+
+    <!-- inactive (greyed out) window -->
+    <div class="w98" style="opacity:0.95;">
+      <div class="titlebar inactive">
+        <div class="ico" style="background:#c0c0c0">i</div>
+        <span>about.txt — notepad &nbsp;[inactive]</span>
+        <div class="ctl-grp">
+          <div class="ctl">_</div><div class="ctl">▢</div><div class="ctl">×</div>
+        </div>
+      </div>
+      <div class="menubar">
+        <span style="background:#c0c0c0;color:#000;"><u>f</u>ile</span><span><u>e</u>dit</span><span><u>v</u>iew</span><span><u>h</u>elp</span>
+      </div>
+      <div class="body" style="font-family:'Courier New',monospace;font-size:11px;">// about.txt — last edited 02/14 02:00am<br>oncite — artist · b. somewhere · based nowhere</div>
+      <div class="statusbar">
+        <div class="cell">read-only</div>
+        <div class="cell">ascii · 1 of 1</div>
+        <div class="cell">ln 18, col 14</div>
+      </div>
+    </div>
+
+    <!-- macos classic -->
+    <div class="mac">
+      <div class="titlebar">
+        <div class="x"></div>
+        <div class="name">memories</div>
+      </div>
+      <div class="body">untitled.txt — modified 03:41<br>note 04 of 11 · unsaved</div>
+    </div>
+
+    <!-- broken / glitched window -->
+    <div class="w98 broken">
+      <div class="titlebar" style="background:linear-gradient(90deg,#1d2dc7 0%,#0b4dd6 50%,#0b4dd6 100%);">
+        <div class="ico" style="background:#0b4dd6;color:#fff;">×</div>
+        <span>0xf1534 — system has stopped</span>
+        <div class="ctl-grp"><div class="ctl">×</div></div>
+      </div>
+      <div class="body" style="background:#1d2dc7;color:#fff;font-family:'Tahoma',sans-serif;box-shadow:none;">
+        a fatal exception 0e has occurred at 0028:c0011e36.<br>
+        the current application will be terminated.
+      </div>
+      <div class="statusbar">
+        <div class="cell" style="color:#1f63f0">err 0xf1534</div>
+        <div class="cell">04/12 03:41</div>
+        <div class="cell">press any key</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

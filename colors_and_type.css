@@ -1,0 +1,291 @@
+/* ==========================================================================
+   oncite — colors & type
+   "dark + nostalgic + slightly broken"
+   --------------------------------------------------------------------------
+   The system reads like a corrupted Win98/XP desktop seen through CRT haze.
+   Backgrounds are never pure black — they are warm soot, dead-CRT navy, or
+   damp tile teal. Accents are muted (not brat green, not Y2K candy).
+   Type pairs a system-pixel mono with a heavy display sans.
+   ========================================================================== */
+
+/* Webfonts. Real brand fonts are Helvetica / Arial Narrow / Coolvetica.
+   Helvetica + Arial Narrow are system-installed; we declare them in the
+   font-family stacks below. Coolvetica is loaded from a CDN copy.
+   VT323, Plex Mono, Special Elite remain as supporting accents. */
+@import url('https://fonts.googleapis.com/css2?family=VT323&family=IBM+Plex+Mono:wght@400;500;600;700&family=Special+Elite&display=swap');
+
+@font-face {
+  font-family: 'Coolvetica';
+  src: url('https://cdn.jsdelivr.net/gh/cyrilwanner/coolvetica@master/CoolveticaRg-Regular.woff') format('woff');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* ---------- raw palette ----------
+     Names follow the source vibe. Use the semantic vars below in components,
+     not these directly, unless you mean to break the rules. */
+
+  /* nights & soot — primary backgrounds */
+  --soot-900:        #07080a;   /* deepest — true page bg */
+  --soot-800:        #0d0f12;   /* default canvas */
+  --soot-700:        #14171c;   /* raised surface / window body */
+  --soot-600:        #1c2128;   /* card / inset */
+  --soot-500:        #262b33;   /* hover / divider */
+  --soot-400:        #3a3f48;   /* border */
+
+  /* dead crt — bluish dark cast (the "rude" desktop, BSOD) */
+  --crt-deep:        #0a1426;   /* desaturated navy */
+  --crt-mid:         #16243d;
+  --crt-blue:        #1c3a6e;   /* old XP titlebar, faded */
+  --crt-glow:        #4a78c8;   /* pixelated star, washed */
+  --bsod:            #1d2dc7;   /* the silhouette blue */
+
+  /* brand blue — from the cat logo eyes. THE one true accent. */
+  --brand-blue:      #0b4dd6;   /* primary accent */
+  --brand-blue-hot:  #1f63f0;   /* hover / link */
+  --brand-blue-deep: #082c8a;   /* pressed / shadow */
+
+  /* damp tile — the bathroom / area graffiti teal */
+  --tile-deep:       #0c1c1e;
+  --tile-mid:        #143034;
+  --tile-teal:       #2a5559;
+  --tile-bright:     #3d7c80;
+
+  /* warm / nostalgia — muted, never neon */
+  --bone:            #d8d2c2;   /* paper / text on dark */
+  --bone-dim:        #a39d8d;   /* secondary text */
+  --bone-faint:      #6d6857;   /* tertiary / disabled */
+  --rust:            #0b4dd6;   /* alert red, oxidized */
+  --rust-bright:     #1f63f0;   /* hot button / link */
+  --piss:            #ffffff;   /* warning yellow, dirty */
+  --moss:            #000000;   /* success / okay, dead green */
+  --bruise:          #3a2a4a;   /* purple shadow */
+
+  /* foreground / text */
+  --fg-1:            var(--bone);          /* primary text */
+  --fg-2:            var(--bone-dim);      /* secondary */
+  --fg-3:            var(--bone-faint);    /* tertiary / placeholder */
+  --fg-invert:       #07080a;              /* on light surfaces */
+  --fg-link:         var(--brand-blue-hot);
+  --fg-link-hover:   #4a82ff;
+
+  /* surfaces */
+  --bg-page:         var(--soot-900);
+  --bg-canvas:       var(--soot-800);
+  --bg-window:       var(--soot-700);
+  --bg-window-bar:   #0a0c0f;             /* near black titlebar */
+  --bg-inset:        var(--soot-600);
+  --bg-hover:        var(--soot-500);
+
+  /* lines & borders */
+  --line-1:          #2a2f37;             /* hairline */
+  --line-2:          var(--soot-400);     /* default border */
+  --line-3:          #555a64;             /* strong border / focus */
+  --line-bevel-hi:   #2e333d;             /* faux 3d highlight */
+  --line-bevel-lo:   #050608;             /* faux 3d shadow */
+
+  /* state / semantic */
+  --state-error:     var(--brand-blue-hot);
+  --state-error-bg:  #082c8a;
+  --state-warn:      var(--bone);
+  --state-ok:        #000;
+  --state-info:      var(--crt-glow);
+
+  /* selection / focus */
+  --select-bg:       var(--brand-blue);
+  --select-fg:       var(--bone);
+  --focus-ring:      0 0 0 1px var(--bone-dim), 0 0 0 3px var(--brand-blue);
+
+  /* ---------- type ----------
+     Brand fonts: Helvetica (system), Arial Narrow (system), Coolvetica (CDN). */
+  --font-display:    'Coolvetica', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                                          /* rounded display — wordmark, headlines */
+  --font-sans:       'Helvetica Neue', Helvetica, Arial, sans-serif;
+                                          /* utility / body / chrome */
+  --font-narrow:     'Arial Narrow', 'Helvetica Neue Condensed', 'Helvetica', Arial, sans-serif;
+                                          /* condensed — captions, system labels, mono-feel */
+  --font-mono:       'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
+                                          /* logs, file names, code */
+  --font-pixel:      'VT323', 'IBM Plex Mono', ui-monospace, monospace;
+                                          /* old-screen pixel — BSOD, errors */
+  --font-typewriter: 'Special Elite', 'Courier New', monospace;
+                                          /* notes, memories.txt */
+
+  /* size scale (rem; root = 16px) */
+  --t-10:            0.625rem;   /* 10 — tiny system labels */
+  --t-12:            0.75rem;    /* 12 — captions */
+  --t-13:            0.8125rem;  /* 13 — body small */
+  --t-14:            0.875rem;   /* 14 — UI body */
+  --t-16:            1rem;       /* 16 — body */
+  --t-18:            1.125rem;
+  --t-20:            1.25rem;
+  --t-24:            1.5rem;     /* h4 */
+  --t-32:            2rem;       /* h3 */
+  --t-44:            2.75rem;    /* h2 */
+  --t-64:            4rem;       /* h1 */
+  --t-96:            6rem;       /* display / hero */
+
+  /* line-heights */
+  --lh-tight:        1.05;
+  --lh-snug:         1.25;
+  --lh-body:         1.45;
+  --lh-loose:        1.7;
+
+  /* tracking */
+  --tr-tight:        -0.02em;
+  --tr-normal:       0;
+  --tr-wide:         0.06em;
+  --tr-system:       0.12em;     /* small caps system labels */
+
+  /* ---------- spacing ---------- */
+  --sp-0:            0;
+  --sp-1:            2px;
+  --sp-2:            4px;
+  --sp-3:            8px;
+  --sp-4:            12px;
+  --sp-5:            16px;
+  --sp-6:            24px;
+  --sp-7:            32px;
+  --sp-8:            48px;
+  --sp-9:            64px;
+  --sp-10:           96px;
+
+  /* ---------- radii ---------- */
+  --r-0:             0;          /* default — most things sharp */
+  --r-1:             2px;        /* slight — input chips */
+  --r-2:             4px;        /* buttons */
+  --r-pill:          999px;      /* rare, only capsule tags */
+
+  /* ---------- shadow / elevation ----------
+     We mostly use BEVELS (4 borders) instead of soft drop shadows — that's
+     the OS-window vocabulary. Soft shadows exist but are heavy + offset. */
+  --bevel-out:       inset 1px 1px 0 var(--line-bevel-hi),
+                     inset -1px -1px 0 var(--line-bevel-lo);
+  --bevel-in:        inset 1px 1px 0 var(--line-bevel-lo),
+                     inset -1px -1px 0 var(--line-bevel-hi);
+  --shadow-window:   6px 6px 0 #000, 6px 6px 0 1px var(--line-2);
+  --shadow-popup:    4px 4px 0 #000;
+  --shadow-soft:     0 24px 40px -12px rgba(0,0,0,0.8);
+
+  /* glitch / scan accents */
+  --scan-overlay:    repeating-linear-gradient(
+                       0deg,
+                       rgba(255,255,255,0.02) 0 1px,
+                       transparent 1px 3px);
+  --noise-tint:      rgba(216, 210, 194, 0.04);
+}
+
+/* ==========================================================================
+   semantic primitives
+   ========================================================================== */
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--bg-page);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--t-14);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--select-bg); color: var(--select-fg); }
+
+/* headings — display (Coolvetica) */
+.h-display, h1.display {
+  font-family: var(--font-display);
+  font-size: var(--t-96);
+  line-height: 0.92;
+  letter-spacing: -0.015em;
+  color: var(--fg-1);
+  text-transform: lowercase;
+}
+h1, .h1 {
+  font-family: var(--font-display);
+  font-size: var(--t-64);
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--fg-1);
+  margin: 0;
+}
+h2, .h2 {
+  font-family: var(--font-display);
+  font-size: var(--t-44);
+  line-height: var(--lh-snug);
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+  color: var(--fg-1);
+  margin: 0;
+}
+h3, .h3 {
+  font-family: var(--font-narrow);
+  font-weight: 700;
+  font-size: var(--t-32);
+  line-height: var(--lh-snug);
+  letter-spacing: 0.01em;
+  color: var(--fg-1);
+  margin: 0;
+}
+h4, .h4 {
+  font-family: var(--font-narrow);
+  font-weight: 700;
+  font-size: var(--t-20);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tr-wide);
+  text-transform: lowercase;
+  color: var(--fg-1);
+  margin: 0;
+}
+
+/* body */
+p, .body { font-size: var(--t-14); line-height: var(--lh-body); color: var(--fg-1); margin: 0 0 var(--sp-4); }
+.body-sm { font-size: var(--t-13); }
+.body-lg { font-size: var(--t-16); }
+
+/* utility text styles */
+.label-system,
+.system-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-10);
+  letter-spacing: var(--tr-system);
+  text-transform: lowercase;
+  color: var(--fg-2);
+}
+.caption {
+  font-family: var(--font-mono);
+  font-size: var(--t-12);
+  color: var(--fg-2);
+}
+.pixel {
+  font-family: var(--font-pixel);
+  font-size: var(--t-20);
+  line-height: 1;
+  color: var(--fg-1);
+}
+.note,
+.typewriter {
+  font-family: var(--font-typewriter);
+  font-size: var(--t-14);
+  line-height: var(--lh-body);
+  color: var(--fg-1);
+}
+code, pre, .mono {
+  font-family: var(--font-mono);
+  font-size: var(--t-13);
+  color: var(--fg-1);
+}
+
+/* links */
+a {
+  color: var(--fg-link);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+a:hover { color: var(--fg-link-hover); }
+
+/* hr */
+hr { border: 0; border-top: 1px solid var(--line-1); margin: var(--sp-6) 0; }

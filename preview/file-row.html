@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — file row</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 22px; background: var(--soot-700); font-family: var(--font-mono); }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; color: var(--bone); }
+    thead th {
+      text-align: left; font-weight: 500; letter-spacing: 0.1em; text-transform: lowercase;
+      font-size: 10px; color: var(--fg-2); padding: 6px 10px;
+      background: var(--soot-600); border-bottom: 1px solid var(--line-2);
+      box-shadow: var(--bevel-out);
+    }
+    tbody td { padding: 5px 10px; border-bottom: 1px dashed var(--line-1); }
+    tr:hover td { background: var(--soot-600); color: var(--bone); }
+    tr.sel td { background: var(--brand-blue); color: var(--bone); }
+    .glyph { display: inline-block; width: 14px; text-align: center; margin-right: 6px; opacity: 0.8; }
+  </style>
+</head>
+<body>
+  <table>
+    <thead><tr><th>name</th><th>type</th><th>size</th><th>modified</th></tr></thead>
+    <tbody>
+      <tr><td><span class="glyph">♫</span>cerebral_aura.mp3</td><td>audio</td><td>4.8 MB</td><td>04/12 03:41</td></tr>
+      <tr class="sel"><td><span class="glyph">♫</span>area_demo_v3.mp3</td><td>audio</td><td>3.1 MB</td><td>04/01 11:02</td></tr>
+      <tr><td><span class="glyph">▣</span>shoot_apr15/</td><td>folder</td><td>—</td><td>03/29 18:14</td></tr>
+      <tr><td><span class="glyph">i</span>about.txt</td><td>text</td><td>1 KB</td><td>02/14 02:00</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — desktop icons</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 24px; background: var(--soot-900); }
+    .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+    .ic { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 8px 4px; cursor: pointer; }
+    .ic:hover { background: rgba(216,210,194,0.05); }
+    .glyph { width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 22px; color: var(--bone);
+      background: var(--soot-700); border: 1px solid var(--line-2); box-shadow: var(--bevel-out);
+      filter: grayscale(0.3) saturate(0.7); }
+    .lbl { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.06em;
+      color: var(--bone); text-align: center; text-shadow: 1px 1px 0 #000; }
+    /* glyph variants */
+    .ic-music   .glyph { background: linear-gradient(180deg,#1c3a6e 0%,#0a1426 100%); }
+    .ic-photos  .glyph { background: var(--tile-mid); color: var(--tile-bright); }
+    .ic-memory  .glyph { background: #d8d2c2; color: #07080a; font-family: var(--font-typewriter); font-size: 18px; }
+    .ic-about   .glyph { background: #07080a; color: var(--bone); font-family: var(--font-pixel); font-size: 28px; }
+    .ic-links   .glyph { background: var(--brand-blue); color: var(--bone); }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="ic ic-music"><div class="glyph">♫</div><div class="lbl">music.mp3</div></div>
+    <div class="ic ic-photos"><div class="glyph">▣</div><div class="lbl">visuals/</div></div>
+    <div class="ic ic-memory"><div class="glyph">notes</div><div class="lbl">memories/</div></div>
+    <div class="ic ic-about"><div class="glyph">i</div><div class="lbl">about.txt</div></div>
+    <div class="ic ic-links"><div class="glyph">→</div><div class="lbl">links.exe</div></div>
+  </div>
+</body>
+</html>

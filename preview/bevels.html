@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — bevels & shadows</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 28px; background: var(--soot-800); }
+    .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+    .tile { aspect-ratio: 1.1 / 1; background: var(--soot-700); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 10px; }
+    .tile .name { font-family: var(--font-mono); font-size: 10px; color: var(--fg-2); letter-spacing: var(--tr-system); text-transform: lowercase; }
+    .swatch { width: 70%; height: 60%; background: var(--soot-600); }
+    .b1 { box-shadow: var(--bevel-out); }
+    .b2 { box-shadow: var(--bevel-in); }
+    .b3 { box-shadow: 6px 6px 0 #000, 6px 6px 0 1px var(--line-2); border: 1px solid var(--line-2); }
+    .b4 { box-shadow: 0 24px 40px -12px rgba(0,0,0,0.8); border: 1px solid var(--line-1); }
+  </style>
+</head>
+<body>
+  <div class="row">
+    <div class="tile"><div class="swatch b1"></div><div class="name">bevel-out · raised</div></div>
+    <div class="tile"><div class="swatch b2"></div><div class="name">bevel-in · pressed</div></div>
+    <div class="tile"><div class="swatch b3"></div><div class="name">window · 6px hard</div></div>
+    <div class="tile"><div class="swatch b4"></div><div class="name">soft drop · rare</div></div>
+  </div>
+</body>
+</html>

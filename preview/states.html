@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — semantic states</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 22px; background: #c0c0c0; font-family: 'Tahoma', Arial, sans-serif; color: #000; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 3px); }
+    .stack { display: flex; flex-direction: column; gap: 14px; max-width: 560px; }
+
+    /* base alert — windows-y, with a beveled icon and inset body */
+    .alert {
+      display: grid; grid-template-columns: 36px 1fr; gap: 10px; padding: 10px 12px;
+      border: 1px solid #000; box-shadow: 3px 3px 0 #000;
+      align-items: flex-start;
+    }
+    .alert .ic {
+      width: 32px; height: 32px; line-height: 32px; text-align: center;
+      font-family: 'Tahoma',sans-serif; font-weight: bold; font-size: 22px;
+      border: 1px solid #000; box-shadow: inset 1px 1px 0 rgba(255,255,255,0.6);
+    }
+    .alert .copy { font-family: 'MS Sans Serif','Tahoma',sans-serif; font-size: 12px; line-height: 1.4; }
+    .alert .copy b { font-family: 'Trebuchet MS', sans-serif; font-weight: bold; display: block; font-size: 13px; margin-bottom: 1px; }
+    .alert .meta { font-family: 'Tahoma',sans-serif; font-size: 10px; opacity: 0.75; margin-top: 2px; }
+    .alert .meta::before { content: "// "; }
+
+    /* error — rust+yellow */
+    .e { background: #ffe9d9; }
+    .e .ic { background: #0b4dd6; color: #ffffff; }
+
+    /* warn — bright yellow caution */
+    .w { background: #fff7c2; }
+    .w .ic { background: #ffffff; color: #000; }
+    .w .stripe { height: 6px; background: repeating-linear-gradient(45deg, #ffffff 0 8px, #000 8px 16px); margin: 8px -12px -10px; }
+
+    /* info — brand blue */
+    .i { background: #e6efff; }
+    .i .ic { background: #0b4dd6; color: #fff; }
+
+    /* success — moss/lime */
+    .s { background: #d4ecc8; }
+    .s .ic { background: #4a7d2a; color: #fff; }
+
+    /* loading — barber strip */
+    .l { background: #e9e9e9; position: relative; overflow: hidden; }
+    .l .ic { background: #c0c0c0; color: #000; animation: spin 1.2s steps(8) infinite; }
+    @keyframes spin { to { transform: rotate(360deg) } }
+    .l .bar {
+      height: 14px; background: repeating-linear-gradient(45deg, #0b4dd6 0 10px, #082c8a 10px 20px);
+      animation: march 1s linear infinite; margin-top: 8px;
+      border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #404040;
+    }
+    @keyframes march { to { background-position: 28px 0; } }
+
+    /* ghost / disabled */
+    .g { background: #c0c0c0; }
+    .g .ic { background: #c0c0c0; color: #888; box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff; }
+    .g .copy { color: #555; }
+
+    /* page header strip — like an XP info bar */
+    .strip {
+      display: flex; align-items: center; gap: 8px;
+      background: linear-gradient(180deg,#fff7c2,#ffe9a0);
+      border: 1px solid #000; padding: 4px 10px;
+      font-family: 'MS Sans Serif',sans-serif; font-size: 11px;
+      box-shadow: 2px 2px 0 #000;
+    }
+    .strip .ic { width: 18px; height: 18px; background: #ffffff; border: 1px solid #000; line-height: 16px; text-align: center; font-weight: bold; font-family: 'Tahoma',sans-serif; }
+  </style>
+</head>
+<body>
+  <div class="stack">
+    <div class="strip"><div class="ic">!</div> popup blocker is enabled — oncite_os will probably break. <a href="#" onclick="event.preventDefault()" style="color:#0b4dd6;">click here to allow</a></div>
+
+    <div class="alert e">
+      <div class="ic">×</div>
+      <div class="copy">
+        <b>upload failed.</b>
+        host did not respond. retry in 30 seconds, or save the file locally and try again later.
+        <div class="meta">err 0xf1534 · 04/12 03:41am</div>
+      </div>
+    </div>
+
+    <div class="alert w">
+      <div class="ic">!</div>
+      <div class="copy">
+        <b>unsaved feelings.</b>
+        you have 1 modified file in <b style="display:inline">memories/</b>. closing now will lose your changes.
+        <div class="meta">untitled.txt · modified 03:41</div>
+        <div class="stripe"></div>
+      </div>
+    </div>
+
+    <div class="alert i">
+      <div class="ic">i</div>
+      <div class="copy">
+        <b>cerebral aura — out 06.06.</b>
+        pre-save is live. an e-mail will arrive 24 hours before release.
+        <div class="meta">14 days remaining</div>
+      </div>
+    </div>
+
+    <div class="alert s">
+      <div class="ic">✓</div>
+      <div class="copy">
+        <b>upload complete.</b>
+        cerebral_aura_v3_FINAL_final.mp3 · 4.8 mb · 320 kbps. you can close this window.
+        <div class="meta">04/12 03:43am · ok</div>
+      </div>
+    </div>
+
+    <div class="alert l">
+      <div class="ic">/</div>
+      <div class="copy">
+        <b>uploading...</b>
+        please don't close this window. progress is also being saved every 5 seconds.
+        <div class="bar"></div>
+      </div>
+    </div>
+
+    <div class="alert g">
+      <div class="ic">×</div>
+      <div class="copy">
+        <b>this action is unavailable.</b>
+        feature has been disabled by the artist. (no, you cannot delete this either.)
+      </div>
+    </div>
+  </div>
+</body>
+</html>

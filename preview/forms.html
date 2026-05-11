@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — form fields</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 22px; background: #c0c0c0; font-family: 'Tahoma', Arial, sans-serif; color: #000; }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0 1px, transparent 1px 3px);
+    }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 26px; align-items: start; }
+    .stack { display: flex; flex-direction: column; gap: 5px; }
+    .lbl { font-family: 'MS Sans Serif', 'Tahoma', sans-serif; font-size: 11px; color: #000; text-transform: lowercase; }
+    .lbl b { color: #0b4dd6; }
+
+    /* win98 sunken input */
+    .inp {
+      font-family: 'Tahoma', 'MS Sans Serif', sans-serif; font-size: 12px;
+      background: #fff; color: #000; padding: 3px 5px;
+      border: 1px solid #000;
+      box-shadow:
+        inset 1px 1px 0 #808080,
+        inset -1px -1px 0 #fff,
+        inset 2px 2px 0 #404040,
+        inset -2px -2px 0 #dfdfdf;
+      width: 100%; box-sizing: border-box;
+    }
+    .inp::placeholder { color: #888; }
+    .inp:focus { outline: 1px dotted #000; outline-offset: -3px; background: #ffffe1; }
+
+    /* error variant */
+    .inp.err { background: #fff0f0; }
+    .err-msg { font-family: 'MS Sans Serif', sans-serif; font-size: 10px; color: #1f63f0; padding-left: 2px; }
+    .err-msg::before { content: "⚠ "; color: #1f63f0; }
+
+    /* dropdown — fake */
+    .dd {
+      display: flex; border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff,
+                  inset 2px 2px 0 #404040, inset -2px -2px 0 #dfdfdf;
+      background: #fff;
+    }
+    .dd .val { flex: 1; padding: 3px 5px; font-size: 12px; }
+    .dd .arrow {
+      width: 18px; background: #c0c0c0; border-left: 1px solid #000;
+      display: flex; align-items: center; justify-content: center; font-size: 9px;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080;
+    }
+
+    /* textarea */
+    .ta {
+      font-family: 'Tahoma', sans-serif; font-size: 12px;
+      background: #fff; color: #000; padding: 4px 6px;
+      border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff,
+                  inset 2px 2px 0 #404040, inset -2px -2px 0 #dfdfdf;
+      width: 100%; box-sizing: border-box; resize: none;
+      background-image: linear-gradient(transparent 16px, #d8d8d8 17px); background-size: 100% 18px;
+      line-height: 18px;
+    }
+
+    /* check + radio rows */
+    .opt { display: flex; align-items: center; gap: 6px; font-family: 'MS Sans Serif','Tahoma',sans-serif; font-size: 11px; }
+    .check, .radio {
+      width: 13px; height: 13px; background: #fff; border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
+      display: inline-flex; align-items: center; justify-content: center;
+    }
+    .radio { border-radius: 50%; }
+    .check.on::after { content: "✓"; font-size: 11px; line-height: 1; color: #000; }
+    .radio.on::after { content: ""; width: 5px; height: 5px; background: #000; border-radius: 50%; }
+
+    /* slider — chunky */
+    .slider { position: relative; height: 22px; display: flex; align-items: center; }
+    .slider .track {
+      flex: 1; height: 4px; background: #fff;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
+      border: 1px solid #000;
+    }
+    .slider .knob {
+      position: absolute; left: 38%; width: 10px; height: 18px; background: #c0c0c0;
+      border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #808080;
+    }
+
+    /* progress (file upload) */
+    .prog {
+      height: 16px; background: #fff; border: 1px solid #000;
+      box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff;
+      padding: 1px; display: flex; gap: 2px; overflow: hidden;
+    }
+    .prog .seg { flex: 0 0 8px; background: #0b4dd6; height: 100%; }
+    .prog .seg:nth-child(n+11) { background: transparent; }
+
+    /* fieldset like windows group box */
+    .group {
+      border: 1px solid #fff;
+      box-shadow: inset 0 0 0 1px #808080, 1px 1px 0 #404040;
+      padding: 12px 12px 10px; position: relative;
+      background: #c0c0c0;
+    }
+    .group .legend {
+      position: absolute; top: -7px; left: 8px; background: #c0c0c0; padding: 0 4px;
+      font-family: 'MS Sans Serif', sans-serif; font-size: 11px;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+    <div class="stack">
+      <div class="lbl">your name <b>*</b></div>
+      <input class="inp" type="text" value="oncite" />
+    </div>
+    <div class="stack">
+      <div class="lbl">e-mail address <b>*</b></div>
+      <input class="inp" type="text" placeholder="enter e-mail address..." />
+    </div>
+
+    <div class="stack">
+      <div class="lbl">password</div>
+      <input class="inp" type="password" value="********" />
+    </div>
+    <div class="stack">
+      <div class="lbl">file format</div>
+      <div class="dd"><div class="val">.mp3 (recommended)</div><div class="arrow">▼</div></div>
+    </div>
+
+    <div class="stack" style="grid-column: 1 / span 2;">
+      <div class="lbl">leave a message in the guestbook</div>
+      <textarea class="ta" rows="4">i don't deserve anything i want
+i'm not better enough yet please stay
+i am trying for u</textarea>
+    </div>
+
+    <div class="stack">
+      <div class="lbl">phone number <b>*</b></div>
+      <input class="inp err" type="text" value="555-not-real" />
+      <div class="err-msg">invalid format. try (555) 123-4567.</div>
+    </div>
+
+    <div class="stack">
+      <div class="lbl">volume</div>
+      <div class="slider"><div class="track"></div><div class="knob"></div></div>
+      <div class="lbl" style="opacity:.7;">// 38% · stereo · 44.1khz</div>
+    </div>
+
+    <div class="stack">
+      <div class="lbl">downloading cerebral_aura.mp3...</div>
+      <div class="prog">
+        <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+        <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+        <div class="seg"></div><div class="seg"></div>
+        <div class="seg"></div><div class="seg"></div><div class="seg"></div><div class="seg"></div>
+      </div>
+      <div class="lbl" style="opacity:.7;">// 4.8 mb of 12.4 mb · 38% · 14 sec remaining</div>
+    </div>
+
+    <div class="group">
+      <span class="legend">subscribe me to:</span>
+      <div class="opt"><span class="check on"></span> tour announcements</div>
+      <div class="opt"><span class="check"></span> demos and b-sides</div>
+      <div class="opt"><span class="check on"></span> popups at 3am</div>
+    </div>
+
+    <div class="group">
+      <span class="legend">file type</span>
+      <div class="opt"><span class="radio on"></span> .mp3 (320kbps)</div>
+      <div class="opt"><span class="radio"></span> .wav (lossless)</div>
+      <div class="opt"><span class="radio"></span> .flac</div>
+    </div>
+  </div>
+</body>
+</html>

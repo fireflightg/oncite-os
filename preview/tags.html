@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — tags & stickers</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; padding: 28px; background: var(--soot-800); display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+    .tag-mono { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em;
+      text-transform: lowercase; padding: 4px 10px; background: var(--soot-700);
+      color: var(--bone); border: 1px solid var(--line-2); }
+    .tag-rust { background: var(--brand-blue); color: var(--bone); border-color: #07080a; }
+    .tag-tile { background: var(--tile-mid); color: var(--tile-bright); border-color: #07080a; }
+    .tag-bone { background: var(--bone); color: #07080a; border-color: #07080a; }
+    .tag-pill { border-radius: 999px; padding: 3px 12px; font-family: var(--font-mono); font-size: 11px;
+      background: rgba(216,210,194,0.06); color: var(--bone); border: 1px solid var(--line-2); }
+    .tag-dash { font-family: var(--font-mono); font-size: 11px; padding: 4px 10px;
+      background: transparent; color: var(--bone-dim); border: 1px dashed var(--line-2); }
+    .sticker-tape { display: inline-block; padding: 6px 14px; font-family: var(--font-typewriter);
+      font-size: 14px; background: rgba(216, 210, 194, 0.85); color: #07080a;
+      transform: rotate(-2deg); box-shadow: 2px 2px 0 #000; }
+    .sticker-bsod { font-family: var(--font-pixel); font-size: 14px; background: #1d2dc7; color: var(--bone);
+      padding: 3px 8px; transform: rotate(1.5deg); }
+  </style>
+</head>
+<body>
+  <span class="tag-mono">// new</span>
+  <span class="tag-mono tag-rust">live · sold out</span>
+  <span class="tag-mono tag-tile">b-side</span>
+  <span class="tag-mono tag-bone">demo</span>
+  <span class="tag-pill">cerebral aura</span>
+  <span class="tag-dash">pre-save</span>
+  <span class="sticker-tape">don't let me destruct</span>
+  <span class="sticker-bsod">fatal 0xf1534</span>
+</body>
+</html>

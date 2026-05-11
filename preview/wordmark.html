@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>oncite — wordmark & logo</title>
+  <link rel="stylesheet" href="../colors_and_type.css">
+  <style>
+    body { margin: 0; background: #c0c0c0; font-family: 'Tahoma', Arial, sans-serif; }
+    body::before { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 5;
+      background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 3px); }
+    .stage { position: relative; padding: 28px 30px; display: flex; align-items: center; gap: 26px; }
+    .logo { width: 96px; height: 96px; flex: 0 0 96px;
+      image-rendering: pixelated;
+      border: 1px solid #000;
+      box-shadow: 2px 2px 0 #000;
+      background: #fff;
+    }
+    .mark {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 900;
+      font-size: 92px; line-height: 0.9; letter-spacing: -0.04em;
+      color: #000; text-transform: lowercase; position: relative;
+    }
+    .mark .glitch {
+      position: absolute; left: 0; top: 0; color: #0b4dd6;
+      transform: translate(2px,1px); mix-blend-mode: multiply; opacity: 0.85;
+    }
+    .meta { font-family: 'MS Sans Serif','Tahoma', sans-serif; font-size: 11px; color: #000;
+      line-height: 1.6; }
+    .meta b { font-family: 'Trebuchet MS', sans-serif; color: #0b4dd6; font-size: 13px; display: block; }
+    .swatch { display: inline-block; width: 14px; height: 14px; vertical-align: -2px; margin-right: 4px;
+      border: 1px solid #000; box-shadow: 1px 1px 0 #000; }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <img class="logo" src="../assets/logo/oncite-cat.jpg" alt="oncite cat">
+    <div class="mark">
+      <span class="glitch" aria-hidden="true">oncite</span>
+      oncite
+    </div>
+    <div class="meta">
+      <b>oncite</b>
+      cat mark · est. 2024<br>
+      helvetica · 900 · lowercase<br>
+      <span class="swatch" style="background:#0b4dd6;"></span>brand blue · #0b4dd6
+    </div>
+  </div>
+</body>
+</html>
