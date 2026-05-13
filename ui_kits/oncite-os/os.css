@@ -239,7 +239,7 @@ body[data-title-style="mono"] .win-title { background: #000; }
 .cat-guide { position: fixed; right: 18px; bottom: 44px; z-index: 1500;
   display: flex; align-items: flex-end; gap: 4px; pointer-events: none; }
 .cg-cat { width: 72px; height: 72px;
-  background: url('../../assets/logo/oncite-cat-pixel-64.png') center/contain no-repeat;
+  background: url('../../../assets/logo/oncite-cat-pixel-64.png') center/contain no-repeat;
   image-rendering: pixelated;
   animation: cgbob 1.4s steps(2) infinite;
   filter: drop-shadow(2px 2px 0 rgba(0,0,0,0.4));
