@@ -1,10 +1,26 @@
 // WindowChrome.jsx — shared window/popup primitives for oncite-os
 const { useState, useRef, useEffect } = React;
 
-function Window({ title, status, menubar, x, y, w, h, z, active, onFocus, onClose, children }) {
+// shared mobile detector — narrow viewport OR coarse pointer
+function useIsMobile() {
+  const get = () => (typeof window !== 'undefined') &&
+    (window.matchMedia('(max-width: 760px)').matches ||
+     window.matchMedia('(pointer: coarse)').matches && window.innerWidth < 900);
+  const [m, setM] = useState(get());
+  useEffect(() => {
+    const on = () => setM(get());
+    window.addEventListener('resize', on);
+    window.addEventListener('orientationchange', on);
+    return () => { window.removeEventListener('resize', on); window.removeEventListener('orientationchange', on); };
+  }, []);
+  return m;
+}
+
+function Window({ title, status, menubar, x, y, w, h, z, active, onFocus, onClose, mobile, children }) {
   const [pos, setPos] = useState({ x, y });
   const dragRef = useRef(null);
   function onMouseDown(e) {
+    if (mobile) return; // no dragging on mobile — windows are fullscreen
     onFocus && onFocus();
     const sx = e.clientX, sy = e.clientY;
     const ox = pos.x, oy = pos.y;
@@ -13,13 +29,17 @@ function Window({ title, status, menubar, x, y, w, h, z, active, onFocus, onClos
     window.addEventListener('mousemove', move);
     window.addEventListener('mouseup', up);
   }
+  const style = mobile
+    ? { zIndex: z }
+    : { left: pos.x, top: pos.y, width: w, height: h, zIndex: z };
   return (
-    <div className="win" style={{ left: pos.x, top: pos.y, width: w, height: h, zIndex: z }} onMouseDown={onFocus}>
+    <div className={"win" + (mobile ? " mobile" : "")} style={style} onMouseDown={onFocus}>
       <div className={"win-title " + (active ? "" : "inactive")} onMouseDown={onMouseDown} ref={dragRef}>
+        {mobile && <span className="back" onClick={(e) => { e.stopPropagation(); onClose && onClose(); }}>‹</span>}
         <span className="name">{title}</span>
         <span className="ctl-grp">
-          <span className="ctl min" onClick={(e) => { e.stopPropagation(); }}><i>_</i></span>
-          <span className="ctl" onClick={(e) => { e.stopPropagation(); }}>□</span>
+          {!mobile && <span className="ctl min" onClick={(e) => { e.stopPropagation(); }}><i>_</i></span>}
+          {!mobile && <span className="ctl" onClick={(e) => { e.stopPropagation(); }}>□</span>}
           <span className="ctl" onClick={(e) => { e.stopPropagation(); onClose && onClose(); }}>×</span>
         </span>
       </div>
@@ -58,3 +78,4 @@ function Popup({ title, kind = 'rust', body, actions, onClose, x = 320, y = 180 
 
 window.Window = Window;
 window.Popup = Popup;
+window.useIsMobile = useIsMobile;

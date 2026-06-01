@@ -18,7 +18,8 @@ function Clock() {
 }
 
 function Desktop() {
-  const [open, setOpen] = useState([{ id: 'music', z: 1 }]);
+  const mobile = window.useIsMobile ? window.useIsMobile() : false;
+  const [open, setOpen] = useState(mobile ? [] : [{ id: 'music', z: 1 }]);
   const [zTop, setZTop] = useState(2);
   const [popup, setPopup] = useState(null);
   const [selected, setSelected] = useState(null);
@@ -30,11 +31,13 @@ function Desktop() {
     const t = setTimeout(() => setPopup({
       title: '⚠ welcome.exe',
       kind: 'rust',
-      body: <span>this is oncite_os.<br/>nothing here is real. you can click around.<br/>click an icon to open it.</span>,
+      body: mobile
+        ? <span>this is oncite_os.<br/>nothing here is real.<br/>tap an icon to open it.</span>
+        : <span>this is oncite_os.<br/>nothing here is real. you can click around.<br/>click an icon to open it.</span>,
       actions: [{ label: 'ok', onClick: () => setPopup(null) }],
     }), 700);
     return () => clearTimeout(t);
-  }, [booted]);
+  }, [booted, mobile]);
 
   function focus(id) {
     setOpen(prev => prev.map(w => w.id === id ? { ...w, z: zTop } : w));
@@ -57,7 +60,7 @@ function Desktop() {
   };
 
   return (
-    <div className="os-root">
+    <div className={"os-root" + (mobile ? " mobile" : "")}>
       {!booted && <window.BootScreen onDone={() => setBooted(true)} />}
       <div className="os-wallpaper" />
       <div className={"os-wallpaper-peek " + (peek ? 'on' : '')}
@@ -67,35 +70,35 @@ function Desktop() {
       <div className="icon-grid">
         {APPS.map(a => (
           <div key={a.id} className={"dt-icon " + a.cls + (selected === a.id ? ' sel' : '')}
-               onClick={() => setSelected(a.id)}
-               onMouseEnter={() => setPeek(a.id)}
-               onMouseLeave={() => setPeek(null)}
-               onDoubleClick={() => openApp(a.id)}>
+               onClick={() => { if (mobile) { openApp(a.id); } else { setSelected(a.id); } }}
+               onMouseEnter={() => !mobile && setPeek(a.id)}
+               onMouseLeave={() => !mobile && setPeek(null)}
+               onDoubleClick={() => !mobile && openApp(a.id)}>
             <div className="glyph" style={{backgroundImage: `url(${a.img})`}} />
             <div className="lbl">{a.name}</div>
           </div>
         ))}
       </div>
 
-      {open.map(w => {
+      {(mobile ? open.slice(-1) : open).map(w => {
         const app = APPS.find(a => a.id === w.id);
         const Comp = app.Comp();
         if (!Comp) return null;
         return (
           <Comp key={w.id}
             x={app.def.x} y={app.def.y} w={app.def.w} h={app.def.h}
-            z={w.z} active={w.z === zTop - 1}
+            z={w.z} active={w.z === zTop - 1} mobile={mobile}
             onFocus={() => focus(w.id)} onClose={() => closeApp(w.id)} />
         );
       })}
 
       {popup && <Popup {...popup} />}
 
-      {window.CatGuide && <window.CatGuide />}
+      {!mobile && window.CatGuide && <window.CatGuide />}
       {window.OncTweaks && <window.OncTweaks />}
 
       <div className="taskbar">
-        <div className="start" onClick={() => openApp('about')}>oncite</div>
+        <div className="start" onClick={() => mobile ? setOpen([]) : openApp('about')}>{mobile ? 'home' : 'oncite'}</div>
         <div className="tasks">
           {open.map(w => {
             const app = APPS.find(a => a.id === w.id);

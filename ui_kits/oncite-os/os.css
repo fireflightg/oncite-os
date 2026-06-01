@@ -257,3 +257,92 @@ body[data-title-style="mono"] .win-title { background: #000; }
   width: 0; height: 0; border-left: 8px solid #000; border-top: 5px solid transparent; border-bottom: 5px solid transparent; }
 .cg-tail::after { content: ""; position: absolute; left: -9px; top: -4px;
   width: 0; height: 0; border-left: 7px solid #fff; border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+
+/* ========================================================================
+   MOBILE  —  driven by .os-root.mobile (JS-detected: ≤760px or coarse+narrow)
+   tap-to-open fullscreen apps, big icon grid, touch-sized taskbar
+   ======================================================================== */
+.os-root.mobile { -webkit-tap-highlight-color: transparent; }
+
+/* boot screen scales down */
+.os-root.mobile .bios-screen { font-size: 11px; line-height: 1.3; }
+.os-root.mobile .boot.bios { padding: 16px 14px; overflow: hidden; }
+.os-root.mobile .boot-wordmark { font-size: 40px; }
+.os-root.mobile .cat-3d { width: 150px; height: 150px; }
+.os-root.mobile .xp-bar { width: 80vw; }
+.os-root.mobile .setup-grid { grid-template-columns: 1fr; gap: 12px; padding: 14px; }
+.os-root.mobile .setup-heart { width: 80vw; max-width: 320px; height: auto; aspect-ratio: 15/13; }
+.os-root.mobile .hcell { width: 6.4%; height: 7.4%; }
+
+/* wallpaper mark smaller */
+.os-root.mobile .os-wallpaper-mark { font-size: 110px; right: 12px; bottom: 80px; }
+
+/* icon grid — centered, 3 across, big touch targets */
+.os-root.mobile .icon-grid {
+  position: absolute; inset: 16px 12px auto 12px; top: 28px;
+  grid-template-columns: repeat(3, 1fr); gap: 10px 4px; justify-items: center;
+}
+.os-root.mobile .dt-icon { padding: 10px 6px; width: 100%; border-radius: 8px; }
+.os-root.mobile .dt-icon.sel { background: rgba(11,77,214,0.25); }
+.os-root.mobile .dt-icon .glyph { width: 64px; height: 64px; box-shadow: 2px 2px 0 #000; margin-bottom: 8px; }
+.os-root.mobile .dt-icon .lbl { font-size: 12px; }
+
+/* windows go fullscreen */
+.win.mobile {
+  position: fixed; left: 0; right: 0; top: 0; bottom: 54px;
+  width: auto; height: auto; min-width: 0; min-height: 0;
+  border: none; border-radius: 0; box-shadow: none;
+  display: flex; flex-direction: column;
+  animation: winpop 0.18s steps(3);
+}
+@keyframes winpop { from { transform: translateY(14px); opacity: 0.4; } to { transform: none; opacity: 1; } }
+.win.mobile .win-title {
+  height: 48px; font-size: 15px; padding: 0 8px 0 4px; gap: 8px; cursor: default;
+  border-radius: 0;
+}
+.win.mobile .win-title .back {
+  font-size: 30px; line-height: 1; color: #fff; width: 36px; text-align: center;
+  cursor: pointer; flex: 0 0 36px;
+}
+.win.mobile .win-title .name { font-size: 14px; }
+.win.mobile .win-title .ctl { width: 30px; height: 30px; line-height: 28px; font-size: 16px; }
+.win.mobile .win-body { flex: 1; min-height: 0; margin: 0; border-left: none; border-right: none; }
+.win.mobile .win-menubar { font-size: 13px; padding: 4px 8px; gap: 4px; }
+.win.mobile .win-menubar span { padding: 4px 8px; }
+.win.mobile .win-status { font-size: 11px; padding: 4px 6px; }
+
+/* music player — bigger controls on mobile */
+.os-root.mobile .mp-cover .tt, .os-root.mobile .mp-cover .glitch { font-size: 34px; }
+.os-root.mobile .mp-controls { padding: 12px; gap: 10px; }
+.os-root.mobile .mp-btn { width: 44px; height: 40px; font-size: 14px; }
+.os-root.mobile .mp-btn.play { width: 56px; }
+.os-root.mobile .mp-progress { height: 14px; }
+.os-root.mobile .mp-time { font-size: 14px; min-width: 56px; }
+.os-root.mobile .mp-list .row { padding: 12px; font-size: 14px; }
+
+/* gallery — 2 across, tappable */
+.os-root.mobile .gal-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 10px; }
+.os-root.mobile .gal-toolbar span { padding: 6px 10px; }
+.os-root.mobile .gal-viewer .close { padding: 10px 16px; font-size: 13px; }
+
+/* text bodies — comfier reading size */
+.os-root.mobile .mem-body, .os-root.mobile .about-body { font-size: 15px; line-height: 1.7; padding: 16px 18px; }
+.os-root.mobile .link-row { padding: 14px 12px; font-size: 14px; }
+
+/* taskbar — taller, touch-sized; hide the per-window task chips (only 1 fullscreen app) */
+.os-root.mobile .taskbar { height: 54px; padding: 0 8px; gap: 8px; }
+.os-root.mobile .taskbar .start {
+  height: 40px; padding: 0 20px; font-size: 14px; border-radius: 6px;
+}
+.os-root.mobile .taskbar .start::before { width: 20px; height: 20px; }
+.os-root.mobile .taskbar .tasks { display: none; }
+.os-root.mobile .taskbar .clock { height: 40px; font-size: 13px; padding: 0 14px; border-radius: 6px; }
+.os-root.mobile .taskbar .clock span { display: none; }
+
+/* popups fit the screen */
+.os-root.mobile .popup {
+  left: 50% !important; top: 50% !important; transform: translate(-50%, -50%);
+  width: min(88vw, 360px); min-width: 0;
+}
+.os-root.mobile .popup .body { font-size: 13px; }
+.os-root.mobile .popup .btn { padding: 8px 18px; font-size: 13px; }
